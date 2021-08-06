@@ -25,15 +25,14 @@ void create_diff_article (text* formula_info, FILE* formula, char* file_name)
 
 double create_nmb (diff_tree* dftr, FILE* formula)
 {   
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
 
     double out_nmb = atof (dftr -> counter);
-   // create_node ();
 
     while (isdigit(*dftr -> counter) || *dftr -> counter == '.')
-        (dftr -> counter)++;
+        dftr -> counter++;
 
-    skip_spaces (dftr -> counter);  
+    skip_spaces (dftr);
             
     return out_nmb;
 }
@@ -42,12 +41,12 @@ double create_nmb (diff_tree* dftr, FILE* formula)
 
 double create_exp (diff_tree* dftr, FILE* formula)
 {
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
     sign s = POS;
 
     if (*dftr -> counter == '-')
     {
-        (dftr -> counter)++;
+        dftr -> counter++;
         s = NEG;  
     }
 
@@ -57,7 +56,7 @@ double create_exp (diff_tree* dftr, FILE* formula)
     {
         if (*dftr -> counter == '+')
         {
-            (dftr -> counter)++;
+            dftr -> counter++;
             s = POS;
         }
         else if (*dftr -> counter == '-')
@@ -66,12 +65,12 @@ double create_exp (diff_tree* dftr, FILE* formula)
             s = NEG; 
         }   
 
-        skip_spaces (dftr -> counter);
+        skip_spaces (dftr);
 
         res_nmb += create_t (dftr, formula) * s;
     }
 
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
     
     return res_nmb;
 }
@@ -80,13 +79,13 @@ double create_exp (diff_tree* dftr, FILE* formula)
 
 double create_t (diff_tree* dftr, FILE* formula)
 {
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
     
     double res_nmb = create_w (dftr, formula);
 
     while (*dftr -> counter == '*' || *dftr -> counter == '/')
     {
-        skip_spaces (dftr -> counter);
+        skip_spaces (dftr);
 
         if (*dftr -> counter == '*')
         {
@@ -100,7 +99,7 @@ double create_t (diff_tree* dftr, FILE* formula)
         }   
     }
 
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
 
     return res_nmb;
 }
@@ -109,7 +108,7 @@ double create_t (diff_tree* dftr, FILE* formula)
 
 double create_p (diff_tree* dftr, FILE* formula)
 {
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
 
     double res_nmb = 0;
 
@@ -129,7 +128,7 @@ double create_p (diff_tree* dftr, FILE* formula)
         res_nmb = create_nmb (dftr, formula);
     }
 
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
 
     return res_nmb;
 }
@@ -138,7 +137,7 @@ double create_p (diff_tree* dftr, FILE* formula)
 
 double create_w (diff_tree* dftr, FILE* formula)
 {
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
 
     double res_nmb = create_p (dftr, formula);
     double degrees [MAX_DEGREE] = {};
@@ -158,7 +157,7 @@ double create_w (diff_tree* dftr, FILE* formula)
         
         degrees [nmb_degr++] = create_p (dftr, formula);
 
-        skip_spaces (dftr -> counter);
+        skip_spaces (dftr);
     }
     
     while (nmb_degr != 0)
@@ -166,17 +165,17 @@ double create_w (diff_tree* dftr, FILE* formula)
         x = pow (degrees [--nmb_degr], x);
     }
 
-    skip_spaces (dftr -> counter);
+    skip_spaces (dftr);
 
     return pow (res_nmb, x);
 }
 
 //=============================================================================================
 
-inline void skip_spaces (char* counter)
+inline void skip_spaces (diff_tree* dftr)
 {
-    while (isspace (*counter))
-        counter++;   
+    while (isspace (*dftr -> counter))
+        dftr -> counter++;   
 }
 
 //=============================================================================================
