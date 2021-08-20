@@ -63,12 +63,14 @@ tree_node* create_exp (diff_tree* dftr)
     if (*dftr -> counter == '-')
     {
         dftr -> counter++;
-        s = NEG;  
+        s = NEG; 
     }
 
     tree_node* cur_node   = nullptr;
     tree_node* right_node = nullptr;
     tree_node* left_node  = create_nmb (dftr);
+    
+    left_node -> value *= s;
     
     while (*dftr -> counter == '+' || *dftr -> counter == '-')
     {
@@ -96,10 +98,12 @@ tree_node* create_exp (diff_tree* dftr)
         skip_spaces (dftr);
 
         right_node = create_nmb (dftr);
-    }
 
-    cur_node -> right = right_node;
-    cur_node -> left  = left_node;
+        cur_node -> right = right_node;
+        cur_node -> left  = left_node;
+
+        left_node = cur_node;
+    }
 
     skip_spaces (dftr);
     
