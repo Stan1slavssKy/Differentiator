@@ -1,23 +1,8 @@
 #include "tree.h"
 
 //===================================================================================
-/*
-void create_tree (diff_tree* dftr, int idx)
-{
-    assert (dftr);
 
-    if (dftr -> root == nullptr) 
-    {
-
-    }
-
-    else
-        fprintf (stderr, "Error, second create of dftr tree, %d", __LINE__);
-}   
-*/
-//===================================================================================
-
-tree_node* create_node (char* cur_buff_pos)
+tree_node* create_node (const char* cur_buff_pos)
 {
     assert (cur_buff_pos);
 
@@ -28,7 +13,41 @@ tree_node* create_node (char* cur_buff_pos)
 }
 
 //===================================================================================
-/*
+
+void create_graph_dump (tree_node* root, const char* dumpfile_name)
+{
+    char dot_f_name [150] = {};
+    strcpy (dot_f_name, dumpfile_name);
+    strcat (dot_f_name, ".dot");
+
+    FILE* dump = fopen (dot_f_name, "wb");
+    assert (dump);
+    
+    fprintf (dump, "digraph Differentiator\n{\n");
+    node_graph (root, dump);
+    fprintf (dump, "}\n");
+
+    fclose (dump);
+    printf ("\t\t\tIS = [%s]\n", root -> dump_text);
+    make_dump (dumpfile_name);
+}
+
+//===================================================================================
+
+void make_dump (const char* dumpfile_name)
+{
+    char dump_syscall [150] = {};
+
+    strcpy (dump_syscall, "dot -Tpng ");
+    strcat (dump_syscall, dumpfile_name);
+    strcat (dump_syscall, ".dot -o");
+    strcat (dump_syscall, dumpfile_name);
+    strcat (dump_syscall, ".png");
+
+    system (dump_syscall);
+}
+//===================================================================================
+
 void node_graph (tree_node* cur_node, FILE* grph_viz)
 {  
     assert (cur_node);
@@ -36,44 +55,38 @@ void node_graph (tree_node* cur_node, FILE* grph_viz)
 
     if (cur_node -> right != nullptr && cur_node -> left != nullptr)
     {
-        fprintf (grph_viz, "\t\t\"%s\" -> \"%s\"[label = \"No\"];\n",  cur_node -> data, cur_node -> left -> data);        
-        fprintf (grph_viz, "\t\t\"%s\" -> \"%s\"[label = \"Yes\"];\n", cur_node -> data, cur_node -> right -> data);
-       
+        if (cur_node -> right -> sym_data == NMBR && cur_node -> left -> sym_data != NMBR)
+        {
+            printf ("IM HEREEEEEE\n");
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n",  cur_node -> dump_text, cur_node -> left  -> dump_text);        
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> right -> value);    
+        }
+        else if (cur_node -> right -> sym_data != NMBR && cur_node -> left -> sym_data == NMBR)
+        {
+            printf ("IM HEREEEEEE\n");
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> left  -> value);        
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n",  cur_node -> dump_text, cur_node -> right -> dump_text);    
+        }
+        else if (cur_node -> right -> sym_data == NMBR && cur_node -> left -> sym_data == NMBR)
+        {
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> left  -> value);        
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> right -> value);    
+        }
+        else if (cur_node -> right -> sym_data != NMBR && cur_node -> left -> sym_data != NMBR)
+        {
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n", cur_node -> dump_text, cur_node -> left  -> dump_text);        
+            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n", cur_node -> dump_text, cur_node -> right -> dump_text);    
+        }
+        else
+        {
+            fprintf (stderr, "ERROR in tree.cpp %d\n", __LINE__);
+        }
+        
         node_graph (cur_node -> right, grph_viz);
         node_graph (cur_node -> left,  grph_viz);
     }
 }
 
-//===================================================================================
-
-tree_node* add_node (diff_tree* dftr, tree_node* cur_node, char* data)
-{
-    if (dftr -> root == nullptr)
-    {
-        dftr -> root = (tree_node*) calloc (1, sizeof (tree_node));
-        assert (dftr -> root);
-
-        dftr -> root -> right = nullptr;
-        dftr -> root -> left  = nullptr;
-        dftr -> root -> data  = data;
-    }
-    
-    if (dftr -> answer == 1)
-    {
-        cur_node -> right = (tree_node*) calloc (1, sizeof (tree_node));
-        assert (cur_node -> right);
-    
-        cur_node -> right -> data = data;
-    }
-    else if (dftr -> answer == 0)
-    {
-        cur_node -> left = (tree_node*) calloc (1, sizeof (tree_node));
-        assert (cur_node -> left);
-    
-        cur_node -> left -> data = data;
-    }
-}
-*/
 //===================================================================================
 
 void node_destruct (tree_node* cur_node)

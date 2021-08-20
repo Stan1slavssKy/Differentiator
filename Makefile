@@ -1,6 +1,6 @@
 #==========================================================================================
 
-# Makefile for calc_project
+# Makefile for differentiator project
 #		author: Kurnevich Stanislav
 
 #==========================================================================================
@@ -11,7 +11,7 @@ WARNINGS  = -Wall -Wextra
 DEBUG_MODE   = -g3 -O0 
 RELEASE_MODE = -g0 -O3
 
-VALGRIND_FLAGS = --leak-check=full
+VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all
 
 DIFF_DIR = ./differentiator
 LIBS_DIR = ./libs
@@ -19,15 +19,15 @@ TREE_DIR = ./tree
 
 SOURCE = $(DIFF_DIR)/diff.cpp $(DIFF_DIR)/main.cpp $(LIBS_DIR)/Onegin.cpp $(TREE_DIR)/tree.cpp
 OBJECT = $(SOURCE:.cpp=.o)
-OUTPUT = Calculator
-
+OUTPUT = Diff_output
+ 
 default: valgrind
 
 valgrind: $(OUTPUT)
-	valgrind $(VALGRIND_FLAGS) ./$(OUTPUT) "test"
+	valgrind $(VALGRIND_FLAGS) ./$(OUTPUT) "input_file"
 
 launch: $(OUTPUT)
-	./$(OUTPUT) "test"
+	./$(OUTPUT) "input_file"
 
 $(OUTPUT): $(OBJECT)
 	$(CXX) $(WARNINGS) $(DEBUG_MODE) $^ -o $(OUTPUT)
