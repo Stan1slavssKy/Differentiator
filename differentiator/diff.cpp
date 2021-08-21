@@ -117,7 +117,7 @@ tree_node* create_t (diff_tree* dftr)
     
     tree_node* cur_node   = nullptr;
     tree_node* right_node = nullptr;
-    tree_node* left_node  = create_p (dftr);
+    tree_node* left_node  = create_w (dftr);
 
     cur_node = left_node;
 
@@ -144,7 +144,7 @@ tree_node* create_t (diff_tree* dftr)
 
         skip_spaces (dftr);
 
-        right_node = create_p (dftr);
+        right_node = create_w (dftr);
 
         cur_node -> right = right_node;
         cur_node -> left  = left_node;
@@ -163,32 +163,40 @@ tree_node* create_w (diff_tree* dftr)
 {
     skip_spaces (dftr);
     
+    tree_node* degrees [MAX_DEGREE] = {};
+    
+    int nmb_degr = 0;
+
     tree_node* cur_node   = nullptr;
     tree_node* right_node = nullptr;
     tree_node* left_node  = create_p (dftr);
 
-    tree_node* degrees [MAX_DEGREE] = {};
-   
-    int nmb_degr = 0;
+    cur_node   = left_node;
+    degrees[0] = left_node;
+    nmb_degr++;
 
     while (*dftr -> counter == '^')
     {
         *dftr -> counter++;
-    
-        cur_node = create_node (dftr -> counter);
-        assert (cur_node); 
+        skip_spaces (dftr);
 
-        node_input (cur_node, OPRD, MUL, NOT_NMBR);
-
-        right_node = cur_node -> right;
         degrees [nmb_degr++] = create_p (dftr);
     }
+    
+    right_node = degrees [--nmb_degr];
 
     while (nmb_degr != 0)
     { 
-        cur_node -> right = degrees[--nmb_degr];
+        cur_node = create_node (dftr -> counter);
+        assert (cur_node); 
+        node_input (cur_node, OPRD, POW, NOT_NMBR);
+
+        node_input (cur_node, OPRD, POW, NOT_NMBR);
+
+        cur_node -> right = right_node;
         cur_node -> left  = degrees[--nmb_degr];
 
+        right_node = cur_node;
     }
 
     skip_spaces (dftr);

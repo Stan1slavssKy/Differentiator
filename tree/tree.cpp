@@ -23,7 +23,9 @@ void create_graph_dump (tree_node* root, const char* dumpfile_name)
     FILE* dump = fopen (dot_f_name, "wb");
     assert (dump);
     
-    fprintf (dump, "digraph Differentiator\n{\n");
+    fprintf (dump, "digraph Differentiator\n{\n"
+                   "\t\tnode [shape = \"circle\", color = \"darkgreen\", fontcolor = \"purple\"];\n"
+		           "\t\tedge [color = \"darkgreen\"];\n\n");
     node_graph (root, dump);
     fprintf (dump, "}\n");
 
@@ -57,13 +59,11 @@ void node_graph (tree_node* cur_node, FILE* grph_viz)
     {
         if (cur_node -> right -> sym_data == NMBR && cur_node -> left -> sym_data != NMBR)
         {
-            printf ("IM HEREEEEEE\n");
             fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n",  cur_node -> dump_text, cur_node -> left  -> dump_text);        
             fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> right -> value);    
         }
         else if (cur_node -> right -> sym_data != NMBR && cur_node -> left -> sym_data == NMBR)
         {
-            printf ("IM HEREEEEEE\n");
             fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> left  -> value);        
             fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n",  cur_node -> dump_text, cur_node -> right -> dump_text);    
         }
