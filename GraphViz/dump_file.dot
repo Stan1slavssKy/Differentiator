@@ -3,12 +3,22 @@ digraph Differentiator
 		node [shape = "circle", color = "darkgreen", fontcolor = "purple"];
 		edge [color = "darkgreen"];
 
-		"+" -> "7.000000";
-		"+" -> "*";
-		"*" -> "2.000000";
-		"*" -> "^";
-		"^" -> "/";
-		"^" -> "3.000000";
-		"/" -> "1.000000";
-		"/" -> "8.000000";
+		"0x4dcf670" [label = "^"];
+		"0x4dcf3d0" [label = "2.000000"];
+		"0x4dcf600" [label = "^"];
+		"0x4dcf670" -> "0x4dcf3d0";
+		"0x4dcf670" -> "0x4dcf600";
+
+		"0x4dcf600" [label = "^"];
+		"0x4dcf440" [label = "3.000000"];
+		"0x4dcf590" [label = "^"];
+		"0x4dcf600" -> "0x4dcf440";
+		"0x4dcf600" -> "0x4dcf590";
+
+		"0x4dcf590" [label = "^"];
+		"0x4dcf4b0" [label = "4.000000"];
+		"0x4dcf520" [label = "5.000000"];
+		"0x4dcf590" -> "0x4dcf4b0";
+		"0x4dcf590" -> "0x4dcf520";
+
 }

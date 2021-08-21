@@ -59,23 +59,35 @@ void node_graph (tree_node* cur_node, FILE* grph_viz)
     {
         if (cur_node -> right -> sym_data == NMBR && cur_node -> left -> sym_data != NMBR)
         {
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n",  cur_node -> dump_text, cur_node -> left  -> dump_text);        
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> right -> value);    
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node, cur_node -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node -> left,  cur_node -> left  -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%lf\"];\n", cur_node -> right, cur_node -> right -> value);
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n", cur_node, cur_node -> left); 
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n\n", cur_node, cur_node -> right); 
         }
         else if (cur_node -> right -> sym_data != NMBR && cur_node -> left -> sym_data == NMBR)
         {
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> left  -> value);        
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n",  cur_node -> dump_text, cur_node -> right -> dump_text);    
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node, cur_node -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%lf\"];\n", cur_node -> left,  cur_node -> left  -> value);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node -> right, cur_node -> right -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n", cur_node, cur_node -> left); 
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n\n", cur_node, cur_node -> right);  
         }
         else if (cur_node -> right -> sym_data == NMBR && cur_node -> left -> sym_data == NMBR)
         {
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> left  -> value);        
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%lf\";\n", cur_node -> dump_text, cur_node -> right -> value);    
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node, cur_node -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%lf\"];\n", cur_node -> left,  cur_node -> left  -> value);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%lf\"];\n", cur_node -> right, cur_node -> right -> value);
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n", cur_node, cur_node -> left); 
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n\n", cur_node, cur_node -> right);  
         }
         else if (cur_node -> right -> sym_data != NMBR && cur_node -> left -> sym_data != NMBR)
         {
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n", cur_node -> dump_text, cur_node -> left  -> dump_text);        
-            fprintf (grph_viz, "\t\t\"%s\" -> \"%s\";\n", cur_node -> dump_text, cur_node -> right -> dump_text);    
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node, cur_node -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node -> left,  cur_node -> left  -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" [label = \"%s\"];\n", cur_node -> right, cur_node -> right -> dump_text);
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n", cur_node, cur_node -> left); 
+            fprintf (grph_viz, "\t\t\"%p\" -> \"%p\";\n\n", cur_node, cur_node -> right);    
         }
         else
         {
